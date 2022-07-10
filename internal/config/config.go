@@ -41,6 +41,7 @@ func Init() {
 		RedisConfig: redis.RedisConfig{
 			Address:  os.Getenv("REDIS_ADDRESS"),
 			Password: os.Getenv("REDIS_PASSWORD"),
+			Username: os.Getenv("REDIS_USERNAME"),
 		},
 	}
 
