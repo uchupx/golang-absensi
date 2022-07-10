@@ -21,3 +21,8 @@ type ActivityPutPayload struct {
 	Title       *string `json:"title"`
 	Description *string `json:"description"`
 }
+
+type ActivityGetRequest struct {
+	From  string `form:"from" query:"from"`
+	Until string `form:"until" query:"until"`
+}
