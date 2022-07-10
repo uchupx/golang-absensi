@@ -19,7 +19,7 @@ type Service interface {
 	CreateUser(ctx context.Context, payload dto.UserV1PostPayload) (resp dto.BaseResponse, err error)
 	EditUser(ctx context.Context, payload dto.UserV1PutPayload) (resp *string, err error)
 
-	FindActivityByUserId(ctx context.Context) (resp dto.BaseListResponse, err error)
+	FindActivityByUserId(ctx context.Context, req dto.ActivityGetRequest) (resp dto.BaseListResponse, err error)
 	CreateActivity(ctx context.Context, payload dto.ActivityPostPayload) (resp *string, err error)
 	EditActivity(ctx context.Context, id uint64, payload dto.ActivityPutPayload) (resp *string, err error)
 	DeleteActivity(ctx context.Context, id uint64) (resp *string, err error)

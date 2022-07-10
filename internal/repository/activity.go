@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/uchupx/golang-absensi/internal/model"
@@ -25,8 +26,13 @@ var (
 	updateActivityQuery = squirrel.Update(activityTableName)
 )
 
-func (r *repository) FindActivityByUserId(ctx context.Context, userId uint64) (activities []model.Activity, err error) {
-	query, args, err := findActivityQuery.Where(squirrel.And{squirrel.Eq{"user_id": userId}, squirrel.Eq{"deleted_at": nil}}).ToSql()
+func (r *repository) FindActivityByUserId(ctx context.Context, userId uint64, from *time.Time, until *time.Time) (activities []model.Activity, err error) {
+	findQuery := findActivityQuery
+	if from != nil && until != nil {
+		findQuery = findQuery.Where(squirrel.Expr("created_at BETWEEN ? AND ?", from, until))
+	}
+
+	query, args, err := findQuery.Where(squirrel.And{squirrel.Eq{"user_id": userId}, squirrel.Eq{"deleted_at": nil}}).ToSql()
 	if err != nil {
 		r.logger.Errorf("%s error converting squirrel to query: %s, err: %+v", logTagFindActivityByUserId, query, err)
 		return

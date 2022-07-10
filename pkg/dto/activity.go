@@ -23,6 +23,6 @@ type ActivityPutPayload struct {
 }
 
 type ActivityGetRequest struct {
-	From  string `form:"from" query:"from"`
-	Until string `form:"until" query:"until"`
+	From  *string `form:"from" query:"from"`
+	Until *string `form:"until" query:"until"`
 }

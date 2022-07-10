@@ -11,18 +11,23 @@ import (
 	"github.com/uchupx/golang-absensi/pkg/util/textutil"
 )
 
-type FindActivityByUserId func(ctx context.Context) (resp dto.BaseListResponse, err error)
+type FindActivityByUserId func(ctx context.Context, req dto.ActivityGetRequest) (resp dto.BaseListResponse, err error)
 type CreateActivity func(ctx context.Context, payload dto.ActivityPostPayload) (resp *string, err error)
 type EditActivity func(ctx context.Context, id uint64, payload dto.ActivityPutPayload) (resp *string, err error)
 type DeleteActivity func(ctx context.Context, id uint64) (resp *string, err error)
 
 func HandlerGetActvity(handler FindActivityByUserId) echo.HandlerFunc {
 	return func(c echo.Context) error {
+		var request dto.ActivityGetRequest
+
+		if err := c.Bind(&request); err != nil {
+			return httputil.WriteErrorResponse(c, errors.ErrUnparseableRequestBody)
+		}
 
 		user := c.Get(constant.UserKeyCtx)
 		ctx := context.WithValue(c.Request().Context(), constant.UserKeyCtx, user)
 
-		resp, err := handler(ctx)
+		resp, err := handler(ctx, request)
 		if err != nil {
 			return httputil.WriteErrorResponse(c, err)
 		}

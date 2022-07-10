@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/sirupsen/logrus"
@@ -15,7 +16,7 @@ type Repository interface {
 	FindUserById(ctx context.Context, id uint64) (user *model.User, err error)
 	FindUserByEmail(ctx context.Context, email string) (user *model.User, err error)
 
-	FindActivityByUserId(ctx context.Context, userId uint64) (activities []model.Activity, err error)
+	FindActivityByUserId(ctx context.Context, userId uint64, from *time.Time, until *time.Time) (activities []model.Activity, err error)
 	FindActivityById(ctx context.Context, id uint64, userId uint64) (activity *model.Activity, err error)
 	InsertActivity(ctx context.Context, activity model.Activity) (lastInsertedId *uint64, err error)
 	UpdateActivity(ctx context.Context, activity model.Activity) (rowsAffected *uint64, err error)

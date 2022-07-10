@@ -8,6 +8,7 @@ import (
 	"github.com/uchupx/golang-absensi/pkg/dto"
 	"github.com/uchupx/golang-absensi/pkg/errors"
 	"github.com/uchupx/golang-absensi/pkg/util/textutil"
+	"github.com/uchupx/golang-absensi/pkg/util/timeutil"
 )
 
 const (
@@ -17,10 +18,28 @@ const (
 	logTagDeleteActivity       = "[DeleteActivity]"
 )
 
-func (s *service) FindActivityByUserId(ctx context.Context) (resp dto.BaseListResponse, err error) {
+func (s *service) FindActivityByUserId(ctx context.Context, req dto.ActivityGetRequest) (resp dto.BaseListResponse, err error) {
 	u := getUserByContext(ctx)
+	var from *time.Time
+	var until *time.Time
 	var acactivitiesDto []dto.ActivityResponse
-	activities, err := s.repository.FindActivityByUserId(ctx, u.Id)
+
+	if req.From != nil && req.Until != nil {
+		fromT, err := timeutil.FromString(*req.From)
+		if err != nil {
+			return dto.BaseListResponse{}, err
+		}
+		from = &fromT
+
+		untilT, err := timeutil.FromString(*req.Until)
+		if err != nil {
+			return dto.BaseListResponse{}, err
+		}
+
+		until = &untilT
+	}
+
+	activities, err := s.repository.FindActivityByUserId(ctx, u.Id, from, until)
 	if err != nil {
 		return
 	}
