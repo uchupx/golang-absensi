@@ -2,6 +2,7 @@ package webservice
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
@@ -33,7 +34,7 @@ func StartServer(param *ServiceInitParams) {
 		Middleware: param.Middleware,
 	})
 
-	if err := ec.Start(fmt.Sprintf("0.0.0.0:%s", param.Config.AppAddress)); err != nil {
+	if err := ec.Start(fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT"))); err != nil {
 		param.Logger.Errorf("[StartServer] error listening to %s: %+v", param.Config.AppAddress, err)
 	}
 }
