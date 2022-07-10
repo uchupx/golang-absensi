@@ -1,6 +1,7 @@
 /vendor
-# *.env
+/key
+*.env
 /.vscode
-# *.pub
-# *.pem
+*.pub
+*.pem
 __debug_bin
