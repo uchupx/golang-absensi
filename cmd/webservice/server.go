@@ -33,7 +33,7 @@ func StartServer(param *ServiceInitParams) {
 		Middleware: param.Middleware,
 	})
 
-	if err := ec.Start(fmt.Sprintf(":%s", param.Config.AppAddress)); err != nil {
+	if err := ec.Start(fmt.Sprintf("0.0.0.0:%s", param.Config.AppAddress)); err != nil {
 		param.Logger.Errorf("[StartServer] error listening to %s: %+v", param.Config.AppAddress, err)
 	}
 }
