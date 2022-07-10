@@ -1,0 +1,1 @@
+migrate -path migration/ -database "mysql://$1:$2@tcp(localhost:3306)/$3" $4
